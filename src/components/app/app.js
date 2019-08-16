@@ -66,59 +66,6 @@ export default class App extends Component {
                 tableData: newArr
             };
         });
-
-        let user = {
-            email: "user1@email.com",
-            password: "!password!"
-        };
-
-        let row = {
-            id: 1,
-            name: "Article 1",
-            description: "Article 1 Description",
-            price: 12.50,
-            status: 10
-        };
-
-        fetch('https://gentle-escarpment-19443.herokuapp.com/v1/users/auth', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(user)
-        })
-
-            .then((res) => res.json())
-            .then(
-            data =>
-                fetch('https://gentle-escarpment-19443.herokuapp.com/v1/articles', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${data.access_token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(row)
-                })
-            )
-            .then((res) => res.json())
-            .then(
-                data =>
-                    fetch('https://gentle-escarpment-19443.herokuapp.com/v1/articles/10', {
-                        method: 'GET',
-                        headers: {
-                            'Authorization': `Bearer ${data.access_token}`
-                        }
-                    })
-            )
-            .then((res) => res.json())
-            .then(
-                tableData => {this.setState({tableData});
-                    console.log(tableData)
-                }
-            )
-            .catch( (error) => console.log(error));
-        this.addItem();
-
     };
 
     updateItem = (targetId, inputValues) => {
@@ -136,6 +83,14 @@ export default class App extends Component {
             password: "!password!"
         };
 
+        let row = {
+            id: 1,
+            name: "Nazar",
+            description: "Fernos",
+            price: 12.50,
+            status: 10
+        };
+
         fetch('https://gentle-escarpment-19443.herokuapp.com/v1/users/auth', {
             method: 'POST',
             headers: {
@@ -143,24 +98,26 @@ export default class App extends Component {
             },
             body: JSON.stringify(user)
         })
+
             .then((res) => res.json())
             .then(
                 data =>
-                    fetch('https://gentle-escarpment-19443.herokuapp.com/v1/articles?page=1&updated_after=1410403761', {
+                    fetch('https://gentle-escarpment-19443.herokuapp.com/v1/articles/10', {
                         method: 'GET',
                         headers: {
-                            'Authorization': `Bearer ${data.access_token}`
+                            'Authorization': `Bearer ${data.access_token}`,
+                            'Content-Type': 'application/json'
+
                         }
                     })
-                )
-
+            )
             .then((res) => res.json())
             .then(
                 tableData => {this.setState({tableData});
+                    console.log(tableData)
                 }
             )
-            .catch( (error) => console.log(error))
-
+            .catch( (error) => console.log(error));
     }
 
     render() {
@@ -175,7 +132,8 @@ export default class App extends Component {
                 <Table
                     onDeleted = { this.deleteItem }
                     updateItem = { this.updateItem.bind(this) }
-                    tableItems={tableData} />
+                    tableItems={tableData}
+                />
             </div>
         );
     }

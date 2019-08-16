@@ -39,7 +39,7 @@ export default class TableAddRow extends Component {
         });
     };
 
-    render() {
+        render() {
         return (
             <form className="table-add-row d-flex"
                 onSubmit={this.onSubmit}>
