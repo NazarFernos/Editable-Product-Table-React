@@ -113,7 +113,7 @@ export default class App extends Component {
             )
             .then((res) => res.json())
             .then(
-                tableData => {this.setState({tableData});
+                tableData => {this.setState([tableData]);
                     console.log(tableData)
                 }
             )
