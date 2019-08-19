@@ -5,6 +5,7 @@ import TableAddRow from '../table-add-row';
 
 
 import './app.css';
+import {getArticlesList} from "../../api/arcticles";
 
 export default class App extends Component {
 
@@ -77,7 +78,7 @@ export default class App extends Component {
         });
     };
 
-    componentDidMount() {
+    async componentDidMount() {
         let user = {
             email: "user1@email.com",
             password: "!password!"
@@ -91,34 +92,30 @@ export default class App extends Component {
             status: 10
         };
 
-        fetch('https://gentle-escarpment-19443.herokuapp.com/v1/users/auth', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(user)
-        })
+        const URL = 'https://gentle-escarpment-19443.herokuapp.com';
 
-            .then((res) => res.json())
-            .then(
-                data =>
-                    fetch('https://gentle-escarpment-19443.herokuapp.com/v1/articles/10', {
-                        method: 'GET',
-                        headers: {
-                            'Authorization': `Bearer ${data.access_token}`,
-                            'Content-Type': 'application/json'
+        const logIn = () => {
+            fetch(`${URL}/v1/users/auth`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            })
 
-                        }
-                    })
-            )
-            .then((res) => res.json())
-            .then(
-                tableData => {this.setState([tableData]);
-                    console.log(tableData)
-                }
-            )
-            .catch( (error) => console.log(error));
+                .then((res) => res.json())
+                .then(
+                    data =>
+                        localStorage.setItem('accessToken', `Bearer ${data.access_token}`)
+                )
+        };
+        logIn();
+        this.getArticles();
     }
+    getArticles = async () => {
+        const articles = await getArticlesList()
+        this.setState({tableData:articles})
+    };
 
     render() {
 
