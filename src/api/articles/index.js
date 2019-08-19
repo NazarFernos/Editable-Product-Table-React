@@ -50,7 +50,7 @@ export const getArticlesList = () =>
 getArticlesList();
 
 
-function createArticle() {
+export const createArticle = () =>
 
     fetch(`${URL}/v1/articles`, {
         method: 'POST',
@@ -60,18 +60,18 @@ function createArticle() {
         },
         body: JSON.stringify(row)
     })
-        .then((res) => res.json())
-        .then(
+        .then((res) => res.json());
+        /*.then(
             tableData => { this.setState({tableData});
                 console.log(tableData)
             }
         )
-        .catch((error) => console.log(error))
-}
+        .catch((error) => console.log(error))*/
+
 createArticle();
 
 
-function getArticleById() {
+export const getArticleById = () =>
 
     fetch(`${URL}/v1/articles/10`, {
         method: 'GET',
@@ -79,18 +79,18 @@ function getArticleById() {
             'Authorization': localStorage.getItem('accessToken')
         }
     })
-        .then((res) => res.json())
-        .then(
+        .then((res) => res.json());
+        /*.then(
             tableData => { this.setState({tableData:[tableData]});
                 console.log(tableData)
             }
         )
-        .catch((error) => console.log(error))
-}
+        .catch((error) => console.log(error))*/
+
 getArticleById();
 
 
-function  updateArticle() {
+export const updateArticle = () =>
 
     fetch(`${URL}/v1/articles/98`, {
         method: 'PUT',
@@ -100,12 +100,12 @@ function  updateArticle() {
         },
         body: JSON.stringify(row)
     })
-        .then((res) => res.json())
-        .then(
+        .then((res) => res.json());
+        /*.then(
             tableData => { this.setState({tableData:[tableData]});
                 console.log(tableData)
             }
         )
-        .catch((error) => console.log(error))
-}
+        .catch((error) => console.log(error))*/
+
 updateArticle();

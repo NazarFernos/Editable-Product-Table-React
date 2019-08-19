@@ -5,7 +5,11 @@ import TableAddRow from '../table-add-row';
 
 
 import './app.css';
-import {getArticlesList} from "../../api/arcticles";
+Kmport {createArticle} from "../../api/articles";
+import {getArticleById} from "../../api/articles";
+import {updateArticle} from "../../api/articles";
+
+
 
 export default class App extends Component {
 
@@ -110,12 +114,32 @@ export default class App extends Component {
                 )
         };
         logIn();
-        this.getArticles();
+        this.getArticlesList();
+        this.createArticle();
+        this.getArticleById();
+        this.updateArticle();
     }
-    getArticles = async () => {
-        const articles = await getArticlesList()
+    getArticlesList = async () => {
+        const articles = await getArticlesList();
         this.setState({tableData:articles})
     };
+
+    createArticle = async () => {
+        const articles = await createArticle();
+        this.setState({tableData:articles})
+    };
+
+    getArticleById = async () => {
+        const articles = await getArticleById();
+        this.setState({tableData:articles})
+    };
+
+    updateArticle = async () => {
+        const articles = await updateArticle();
+        this.setState({tableData:articles})
+    };
+
+
 
     render() {
 
