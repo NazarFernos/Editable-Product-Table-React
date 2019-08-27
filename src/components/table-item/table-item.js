@@ -4,10 +4,9 @@ import './table-item.css';
 
 export default class TableItem extends Component {
 
-
         state = {
             isEditting: false,
-            inputValues: {}
+            inputValues: {},
         };
 
     handleChange = (event) => {

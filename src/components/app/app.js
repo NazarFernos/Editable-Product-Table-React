@@ -1,48 +1,29 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 import Table from '../table';
 import TableAddRow from '../table-add-row';
 
-
 import './app.css';
-import {getArticlesList} from "../../api/articles";
-import {createArticle} from "../../api/articles";
-import {getArticleById} from "../../api/articles";
-import {updateArticle} from "../../api/articles";
-
-
 
 export default class App extends Component {
 
-    maxId = 100;
+    maxId = 1;
 
     state = {
-        tableData: [
-            {
-                id: 1,
-                name: "",
-                price: "",
-                description: ""
-            }
-        ]
+        tableData: []
     };
 
     createTableItem = (name, price, description) => {
-        let tableData = this.state.tableData;
-        let lastId = tableData[tableData.length-1].id;
-        if (lastId < this.maxId)
-            return {
-                name,
-                price,
-                description,
-                id: ++lastId
-            };
-
-        return false;
+        return {
+            name,
+            price,
+            description,
+            id: this.maxId++
+        }
     };
 
     deleteItem = (id) => {
-        this.setState(({ tableData }) => {
+        this.setState(({tableData}) => {
 
             const idx = tableData.findIndex((el) => el.id === id);
 
@@ -61,7 +42,7 @@ export default class App extends Component {
 
         if (!newItem) return;
 
-        this.setState(({ tableData }) => {
+        this.setState(({tableData}) => {
 
             const newArr = [
                 ...tableData,
@@ -83,18 +64,10 @@ export default class App extends Component {
         });
     };
 
-    async componentDidMount() {
+    componentDidMount() {
         let user = {
             email: "user1@email.com",
             password: "!password!"
-        };
-
-        let row = {
-            id: 1,
-            name: "Nazar",
-            description: "Fernos",
-            price: 12.50,
-            status: 10
         };
 
         const URL = 'https://gentle-escarpment-19443.herokuapp.com';
@@ -111,51 +84,40 @@ export default class App extends Component {
                 .then((res) => res.json())
                 .then(
                     data =>
-                        localStorage.setItem('accessToken', `Bearer ${data.access_token}`)
+                        fetch(`${URL}/v1/articles?page=1&updated_after=1410403761`, {
+                            method: 'GET',
+                            headers: {
+                                'Authorization': `Bearer ${data.access_token}`
+                            }
+                        })
+                            .then((res) => res.json())
+                            .then(
+                                tableData => {
+                                    this.setState({tableData});
+                                    console.log(tableData)
+                                }
+                            )
+                            .catch((error) => console.log(error))
                 )
         };
         logIn();
-        this.getArticlesList();
-        this.createArticle();
-        this.getArticleById();
-        this.updateArticle();
+
     }
-    getArticlesList = async () => {
-        const articles = await getArticlesList();
-        this.setState({tableData:articles})
-    };
-
-    createArticle = async () => {
-        const articles = await createArticle();
-        this.setState({tableData:articles})
-    };
-
-    getArticleById = async () => {
-        const articles = await getArticleById();
-        this.setState({tableData:articles})
-    };
-
-    updateArticle = async () => {
-        const articles = await updateArticle();
-        this.setState({tableData:articles})
-    };
-
 
 
     render() {
 
-        const { tableData } = this.state;
-
+        const {tableData} = this.state;
 
         return (
             <div className="table-app">
-                <TableAddRow addItem = {this.addItem} />
+
+                <TableAddRow addItem={this.addItem}/>
 
                 <Table
-                    onDeleted = { this.deleteItem }
-                    updateItem = { this.updateItem.bind(this) }
-                    tableItems={tableData}
-                />
+                    onDeleted={this.deleteItem}
+                    updateItem={this.updateItem.bind(this)}
+                    tableItems={tableData}/>
             </div>
         );
     }
