@@ -4,6 +4,7 @@ import Table from '../table';
 import TableAddRow from '../table-add-row';
 
 import './app.css';
+import {URL} from "../../constans";
 
 export default class App extends Component {
 
@@ -72,7 +73,7 @@ export default class App extends Component {
 
         const URL = 'https://gentle-escarpment-19443.herokuapp.com';
 
-        const logIn = () => {
+        const logIn = (userData) => {
             fetch(`${URL}/v1/users/auth`, {
                 method: 'POST',
                 headers: {
@@ -80,27 +81,30 @@ export default class App extends Component {
                 },
                 body: JSON.stringify(user)
             })
-
                 .then((res) => res.json())
                 .then(
                     data =>
-                        fetch(`${URL}/v1/articles?page=1&updated_after=1410403761`, {
-                            method: 'GET',
-                            headers: {
-                                'Authorization': `Bearer ${data.access_token}`
-                            }
-                        })
-                            .then((res) => res.json())
-                            .then(
-                                tableData => {
-                                    this.setState({tableData});
-                                    console.log(tableData)
-                                }
-                            )
-                            .catch((error) => console.log(error))
+                        localStorage.setItem('accessToken', `Bearer ${data.access_token}`)
                 )
         };
         logIn();
+
+        const getArticlesList = () =>
+            fetch(`${URL}/v1/articles?page=1&updated_after=1410403761`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': localStorage.getItem('accessToken')
+                }
+            })
+                .then((res) => res.json())
+                .then(
+                    tableData => { this.setState({tableData});
+                        console.log(tableData)
+                    }
+                )
+                .catch((error) => console.log(error));
+
+        getArticlesList();
 
     }
 
