@@ -1,0 +1,38 @@
+.table-item {
+  font-size: 1.25rem;
+}
+
+.table-item button {
+  width: 35px;
+  margin: 3px;
+}
+
+.table-item-label {
+  margin-left: 1.25rem;
+  line-height: 35px;
+  cursor: pointer;
+}
+
+.coll {
+  width: 20px;
+  text-align: center;
+}
+
+.col1 {
+  width:165px;
+  text-align: center;
+}
+
+.col2 {
+  width:380px;
+  text-align: center;
+}
+
+.col3 {
+  width:225px;
+  text-align: center;
+}
+
+.col4 {
+  width: 20px;
+}
