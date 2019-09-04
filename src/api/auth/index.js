@@ -5,8 +5,8 @@ const user = {
 
 const URL = 'https://gentle-escarpment-19443.herokuapp.com';
 
-const logIn = () => {
-    fetch(`${URL}/v1/users/auth`, {
+export const logIn = user => {
+    return fetch(`${URL}/v1/users/auth`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -20,7 +20,6 @@ const logIn = () => {
                 localStorage.setItem('accessToken', `Bearer ${data.access_token}`)
         )
 };
-logIn();
 
 const logOut = () => {
     fetch(`${URL}/v1/users/auth`, {
@@ -43,4 +42,3 @@ const logOut = () => {
                 .then((res) => res.json())
         )
 };
-logOut();
