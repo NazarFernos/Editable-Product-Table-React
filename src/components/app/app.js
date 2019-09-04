@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 
 import Table from '../table';
 import TableAddRow from '../table-add-row';
+import { logIn } from '../../api/auth';
 
 import './app.css';
-import {URL} from "../../constans";
 
 export default class App extends Component {
 
@@ -73,21 +73,8 @@ export default class App extends Component {
 
         const URL = 'https://gentle-escarpment-19443.herokuapp.com';
 
-        const logIn = (userData) => {
-            fetch(`${URL}/v1/users/auth`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(user)
-            })
-                .then((res) => res.json())
-                .then(
-                    data =>
-                        localStorage.setItem('accessToken', `Bearer ${data.access_token}`)
-                )
-        };
-        logIn();
+        logIn(user)
+            .then(() => getArticlesList());
 
         const getArticlesList = () =>
             fetch(`${URL}/v1/articles?page=1&updated_after=1410403761`, {
@@ -104,7 +91,25 @@ export default class App extends Component {
                 )
                 .catch((error) => console.log(error));
 
-        getArticlesList();
+        /*const deleteArticle = () => {
+            fetch(`${URL}/v1/articles/1`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': localStorage.getItem('accessToken'),
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            })
+                .catch((error) => console.log('my err 2', error))
+                .then((res) => {console.log(res); return res.json()})
+                .then(
+                    tableData => {
+                        this.setState({tableData: [tableData]});
+                        console.log(tableData)
+                    }
+                )
+                .catch((error) => console.log('my err', error));
+        }*/
 
     }
 
