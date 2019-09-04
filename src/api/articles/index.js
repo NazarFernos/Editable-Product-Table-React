@@ -14,7 +14,7 @@ const row = {
 };
 
 export const logIn = (userData) => {
-    fetch(`${URL}/v1/users/auth`, {
+    return fetch(`${URL}/v1/users/auth`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -27,7 +27,6 @@ export const logIn = (userData) => {
                 localStorage.setItem('accessToken', `Bearer ${data.access_token}`)
         )
 };
-logIn();
 
 export const getArticlesList = () =>
     fetch(`${URL}/v1/articles?page=1&updated_after=1410403761`, {
@@ -44,7 +43,6 @@ export const getArticlesList = () =>
         )
         .catch((error) => console.log(error));
 
-getArticlesList();
 
 
 export const createArticle = () =>
@@ -65,7 +63,6 @@ export const createArticle = () =>
         )
         .catch((error) => console.log(error));
 
-createArticle();
 
 
 export const getArticleById = () =>
@@ -84,25 +81,22 @@ export const getArticleById = () =>
         )
         .catch((error) => console.log(error));
 
-getArticleById();
 
-
-export const updateArticle = () =>
-
-    fetch(`${URL}/v1/articles/98`, {
+export const updateArticle = article => {
+    fetch(`${URL}/v1/articles/${article.id}`, {
         method: 'PUT',
         headers: {
             'Authorization': localStorage.getItem('accessToken'),
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(row)
+        body: JSON.stringify(article)
     })
         .then((res) => res.json())
         .then(
-            tableData => { this.setState({tableData:[tableData]});
-                console.log(tableData)
+            tableData => {
+                console.log('edit art', tableData)
             }
         )
         .catch((error) => console.log(error));
 
-updateArticle();
+};
