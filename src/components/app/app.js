@@ -91,8 +91,7 @@ export default class App extends Component {
                 )
                 .catch((error) => console.log(error));
 
-
-        const deleteArticle = () => {
+        /*const deleteArticle = () => {
             fetch(`${URL}/v1/articles/1`, {
                 method: 'DELETE',
                 headers: {
@@ -110,7 +109,7 @@ export default class App extends Component {
                     }
                 )
                 .catch((error) => console.log('my err', error));
-        }
+        }*/
 
     }
 
