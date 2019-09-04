@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import { updateArticle } from '../../api/articles';
 
 import './table-item.css';
 
@@ -6,7 +7,7 @@ export default class TableItem extends Component {
 
         state = {
             isEditting: false,
-            inputValues: {},
+            inputValues: {}
         };
 
     handleChange = (event) => {
@@ -23,6 +24,10 @@ export default class TableItem extends Component {
         const inputValues = Object.assign({}, this.props, this.state);
         this.props.updateItem(id, inputValues);
         this.setState({isEditting: false});
+
+        const { name, description, price } = this.state;
+
+        updateArticle({id, name, description, price});
     };
 
     cancel = () => {
@@ -85,7 +90,7 @@ export default class TableItem extends Component {
                                 <td className="col1">{name}</td>
                                 <td className="col2">{description}</td>
                                 <td className="col3">{price}</td>
-                                <td className="col4">{buttons}</td>
+                                <td className="col4">{buttons.map((button, i) => <Fragment key={i}>{button}</Fragment>)}</td>
                             </tr>
                          </tbody>
                     </table>
